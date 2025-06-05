@@ -1,0 +1,15 @@
+{% extends 'layout.html'  %}
+
+{% block body %}
+<div class="h-full w-full flex justify-center items-center">
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+        <legend class="fieldset-legend">Login</legend>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-neutral mt-4" type="submit">Login</button>
+        </form>
+        <p>No account yet? Register <a href="{% url 'register' %}" class="link">here</a>.</p>
+    </fieldset>
+</div>
+{% endblock %}

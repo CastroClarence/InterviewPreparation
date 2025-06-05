@@ -1,0 +1,57 @@
+{% extends 'layout.html'  %}
+{% load widget_tweaks %}
+
+{% block body %}
+<div class="h-full w-full flex justify-center items-center">
+    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+        <legend class="fieldset-legend">Register</legend>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div class="mb-4">
+            <label class="block mb-1 font-semibold" for="{{ form.username.id_for_label }}">
+                {{ form.username.label }}
+            </label>
+            {{ form.username|add_class:"input input-bordered w-full" }}
+            {% if form.username.help_text %}
+                <p class="text-sm text-gray-500">{{ form.username.help_text }}</p>
+            {% endif %}
+            {{ form.username.errors }}
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+            <label class="block mb-1 font-semibold" for="{{ form.email.id_for_label }}">
+                {{ form.email.label }}
+            </label>
+            {{ form.email|add_class:"input input-bordered w-full" }}
+            {{ form.email.errors }}
+        </div>
+
+        <!-- Password1 -->
+        <div class="mb-4">
+            <label class="block mb-1 font-semibold" for="{{ form.password1.id_for_label }}">
+                {{ form.password1.label }}
+            </label>
+            {{ form.password1|add_class:"input input-bordered w-full" }}
+            {% if form.password1.help_text %}
+                <p class="text-sm text-gray-500">{{ form.password1.help_text|safe }}</p>
+            {% endif %}
+            {{ form.password1.errors }}
+        </div>
+
+        <!-- Password2 -->
+        <div class="mb-4">
+            <label class="block mb-1 font-semibold" for="{{ form.password2.id_for_label }}">
+                {{ form.password2.label }}
+            </label>
+            {{ form.password2|add_class:"input input-bordered w-full" }}
+            {{ form.password2.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-neutral w-full mt-2">Register</button>
+    </form>
+    </fieldset>
+</div>
+{% endblock %}

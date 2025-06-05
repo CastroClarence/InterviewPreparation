@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="p-5">
+        <div>
+            <p>
+                Notes of <span class="font-bold">{{ user.username }}</span>
+            </p>
+            <button class="btn" onclick=showNote()>
+                Add note
+            </button>
+        </div>
+        
+        <div class="hidden" id="noteForm">
+            <!-- Div to show form -->
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn" onclick=hideNote()>
+                    Discard
+                </button>
+                <button type="submit" class="btn" >Submit</button>
+            </form>
+        </div>
+        <div>
+            <ul class="list-disc">
+            {% for note in notes %}
+                <li id="note-{{ note.id}}">
+                    <strong>{{ note.title }}</strong>: {{ note.content }} <button class="btn" onclick="removeNote({{note.id}})">Remove</button>
+                </li>
+            {% empty %}
+                <li>No notes yet.</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const noteForm = document.querySelector('#noteForm');
+
+    function showNote() {
+        // This will show the note form div
+        noteForm.classList.remove('hidden');
+    }
+
+    function hideNote(){
+        // This will hide the note form div
+        noteForm.classList.add('hidden');
+    }
+
+    function removeNote(noteId){
+        fetch(`/delete/note/${noteId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(response => {
+            if (response.ok) {
+                document.querySelector(`#note-${noteId}`).remove()
+            } else {
+                alert("Failed to delete note.")
+            }
+        })
+    }
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+</script>
+{% endblock %}
